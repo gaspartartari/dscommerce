@@ -1,45 +1,46 @@
 package com.learning.dscommerce.entities;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_user")
-public class User {
-    
+@Table(name = "tb_product")
+public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; 
+    private Long id;
     private String name;
 
-    @Column(unique = true)
-    private String email;
-    private String phone;
-    private LocalDate birthDate;
-    private String password;
+    @Column(columnDefinition = "TEXT")
+    private String description;
+    private Double price;
+    private String imgUrl;
 
-    @OneToMany(mappedBy = "client")
-    private List<Order> orders = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn (name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories = new HashSet();
 
-    public User(){
+    public Product(){
+
     }
 
-    public User(Long id, String name, String email, String phone, LocalDate birthDate, String password) {
+    public Product(Long id, String name, String description, Double price, String imgUrl) {
         this.id = id;
         this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.birthDate = birthDate;
-        this.password = password;
+        this.description = description;
+        this.price = price;
+        this.imgUrl = imgUrl;
     }
 
     public Long getId() {
@@ -58,40 +59,32 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getDescription() {
+        return description;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getPhone() {
-        return phone;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Order> getOrders(){
-        return orders;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
     @Override
@@ -110,7 +103,7 @@ public class User {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        User other = (User) obj;
+        Product other = (Product) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
