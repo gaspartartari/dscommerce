@@ -20,7 +20,7 @@ public class Payment {
     private Long id;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant momment;
+    private Instant moment;
 
     @OneToOne
     @MapsId
@@ -30,9 +30,9 @@ public class Payment {
 
     }
 
-    public Payment(Long id, Instant momment, Order order) {
+    public Payment(Long id, Instant moment, Order order) {
         this.id = id;
-        this.momment = momment;
+        this.moment = moment;
         this.order = order;
     }
 
@@ -45,11 +45,11 @@ public class Payment {
     }
 
     public Instant getMomment() {
-        return momment;
+        return moment;
     }
 
-    public void setMomment(Instant momment) {
-        this.momment = momment;
+    public void setMomment(Instant moment) {
+        this.moment = moment;
     }
 
     public Order getOrder() {
