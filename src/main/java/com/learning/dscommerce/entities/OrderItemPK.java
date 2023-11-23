@@ -57,6 +57,4 @@ public class OrderItemPK {
             return false;
         return true;
     }
-
-    
 }
