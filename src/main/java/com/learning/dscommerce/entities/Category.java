@@ -20,7 +20,7 @@ public class Category {
     private String name;
 
     @ManyToMany(mappedBy = "categories")
-    private Set<Product> products = new HashSet();
+    private Set<Product> products = new HashSet<>();
 
     public Category(){
 
