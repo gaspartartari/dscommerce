@@ -1,5 +1,7 @@
 package com.learning.dscommerce.DTO;
 
+import org.springframework.beans.BeanUtils;
+
 import com.learning.dscommerce.entities.Product;
 
 public class ProductDTO {
@@ -11,11 +13,7 @@ public class ProductDTO {
     private String imgUrl;
 
     public ProductDTO(Product product) {
-        id = product.getId();
-        name = product.getName();
-        description = product.getDescription();
-        price = product.getPrice();
-        imgUrl = product.getImgUrl();
+        BeanUtils.copyProperties(product, this);
     }
 
     public Long getId() {
