@@ -1,15 +1,20 @@
 package com.learning.dscommerce.services;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.learning.dscommerce.DTO.ProductDTO;
 import com.learning.dscommerce.entities.Product;
 import com.learning.dscommerce.repositories.ProductRepository;
+import com.learning.dscommerce.services.exceptions.DatabaseException;
+import com.learning.dscommerce.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProductService {
@@ -19,7 +24,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id){
-        Product result = productRepository.findById(id).get();
+        Product result = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Resource not found: " + id));
         ProductDTO dto = new ProductDTO(result);
         return dto;
     }
@@ -40,10 +45,27 @@ public class ProductService {
 
     @Transactional
     public ProductDTO update(Long id, ProductDTO dto){
-        Product entity = productRepository.getReferenceById(id);
-        copyDtoToEntity(dto, entity);
-        entity = productRepository.save(entity);
-        return new ProductDTO(entity);
+        try {
+            Product entity = productRepository.getReferenceById(id);
+            copyDtoToEntity(dto, entity);
+            entity = productRepository.save(entity);
+            return new ProductDTO(entity);
+        } 
+        catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Resource not found: " + id);
+        }
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void deleteById(Long id){
+        if(!productRepository.existsById(id))
+            throw new ResourceNotFoundException("Resource not found: " + id);
+        try {
+            productRepository.deleteById(id);
+        } 
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Referential integrity constraint violation");
+        }
     }
 
     private void copyDtoToEntity(ProductDTO dto, Product entity) {

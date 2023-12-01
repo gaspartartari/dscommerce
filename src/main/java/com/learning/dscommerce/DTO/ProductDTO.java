@@ -4,11 +4,23 @@ import org.springframework.beans.BeanUtils;
 
 import com.learning.dscommerce.entities.Product;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class ProductDTO {
     
     private Long id;
+
+    @NotBlank(message = "Product name canot be blank")
+    @Size(min = 3, max = 80, message = "Product name has to have between 3 and 80 characters")
     private String name;
+
+    @NotBlank(message = "Product description canot be blank")
+    @Size(min = 10, message = "Description has to have at least 10 characters")
     private String description;
+
+    @Positive(message = "Product price must be a positive value")
     private Double price;
     private String imgUrl;
 
