@@ -3,16 +3,21 @@ package com.learning.dscommerce.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_role")
-public class Role {
+public class Role implements GrantedAuthority {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String authority;
 
@@ -20,7 +25,6 @@ public class Role {
     private Set<User> users = new HashSet<>();
 
     public Role(){
-
     }
 
     public Role(Long id, String authority) {
@@ -36,12 +40,17 @@ public class Role {
         this.id = id;
     }
 
+    @Override
     public String getAuthority() {
         return authority;
     }
 
     public void setAuthority(String authority) {
         this.authority = authority;
+    }
+
+    public Set<User> getUsers(){
+        return users;
     }
 
     @Override
