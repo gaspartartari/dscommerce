@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.learning.dscommerce.DTO.CustomError;
-import com.learning.dscommerce.DTO.FieldMessage;
 import com.learning.dscommerce.DTO.ValidationError;
 import com.learning.dscommerce.services.exceptions.DatabaseException;
 import com.learning.dscommerce.services.exceptions.ResourceNotFoundException;
