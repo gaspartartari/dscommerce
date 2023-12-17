@@ -111,6 +111,10 @@ public class User implements UserDetails {
         roles.add(role);
     }
 
+    public Set<Role> getRoles(){
+        return roles;
+    }
+
     public boolean hasRole(String authority){
         for(Role x : roles){
             if(x.getAuthority().equals(authority))
