@@ -24,14 +24,15 @@ public class UserService implements UserDetailsService {
         List<UserDetailsProjection> result = userRepository.searchUserAndRolesByEmail(username);
         if(result.size() == 0)
             throw new UsernameNotFoundException("username not found");
+
         User user = new User();
-        user.setEmail(username);
+        user.setEmail(result.get(0).getUsername());
         user.setPassword(result.get(0).getPassword());
         for (UserDetailsProjection x : result){
             user.addRole(new Role(x.getRoleId(), x.getAuthority()));
         }
+
         return user;
-        
     }
     
 }
