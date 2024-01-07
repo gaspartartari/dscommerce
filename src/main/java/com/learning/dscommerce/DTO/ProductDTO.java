@@ -1,10 +1,15 @@
 package com.learning.dscommerce.DTO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 
+import com.learning.dscommerce.entities.Category;
 import com.learning.dscommerce.entities.Product;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -24,12 +29,18 @@ public class ProductDTO {
     private Double price;
     private String imgUrl;
 
+    @NotEmpty(message = "There must be at least one category")
+    private List<CategoryDTO> categories = new ArrayList<>();
+
     public ProductDTO(){
         
     }
 
     public ProductDTO(Product product) {
         BeanUtils.copyProperties(product, this);
+        for(Category category : product.getCategories()){
+            categories.add(new CategoryDTO(category));
+        }
     }
 
     public Long getId() {
@@ -68,7 +79,12 @@ public class ProductDTO {
         return imgUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
+    public void setImgUrl(String imgUrl){
         this.imgUrl = imgUrl;
+        
+    }
+
+    public List<CategoryDTO> getCategories() {
+        return categories;
     }
 }

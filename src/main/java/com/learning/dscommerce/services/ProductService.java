@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import com.learning.dscommerce.DTO.CategoryDTO;
 import com.learning.dscommerce.DTO.ProductDTO;
 import com.learning.dscommerce.DTO.ProductMinDTO;
+import com.learning.dscommerce.entities.Category;
 import com.learning.dscommerce.entities.Product;
 import com.learning.dscommerce.repositories.ProductRepository;
 import com.learning.dscommerce.services.exceptions.DatabaseException;
@@ -75,5 +75,11 @@ public class ProductService {
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
+        entity.getCategories().clear();
+        for (CategoryDTO catDto: dto.getCategories()){
+            Category category = new Category();
+            category.setId(catDto.getId());;
+            entity.getCategories().add(category);
+        }
     }
 }

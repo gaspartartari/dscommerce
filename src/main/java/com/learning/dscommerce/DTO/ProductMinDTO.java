@@ -4,10 +4,6 @@ import org.springframework.beans.BeanUtils;
 
 import com.learning.dscommerce.entities.Product;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
-
 public class ProductMinDTO {
     
     private Long id;
