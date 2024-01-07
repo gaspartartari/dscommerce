@@ -8,27 +8,20 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
-public class ProductDTO {
+public class ProductMinDTO {
     
     private Long id;
 
-    @NotBlank(message = "Product name canot be blank")
-    @Size(min = 3, max = 80, message = "Product name has to have between 3 and 80 characters")
+    
     private String name;
-
-    @NotBlank(message = "Product description canot be blank")
-    @Size(min = 10, message = "Description has to have at least 10 characters")
-    private String description;
-
-    @Positive(message = "Product price must be a positive value")
     private Double price;
     private String imgUrl;
 
-    public ProductDTO(){
+    public ProductMinDTO(){
         
     }
 
-    public ProductDTO(Product product) {
+    public ProductMinDTO(Product product) {
         BeanUtils.copyProperties(product, this);
     }
 
@@ -46,14 +39,6 @@ public class ProductDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Double getPrice() {
