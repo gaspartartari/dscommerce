@@ -19,10 +19,7 @@ public class UserDTO {
     private String phone;
     private LocalDate birthDate;
     private List<String> authorities = new ArrayList<>();
-
-    public UserDTO(){
-    }
-
+    
     public UserDTO(User user) {
         BeanUtils.copyProperties(user, this);
         
