@@ -60,12 +60,12 @@ public class Order {
         this.id = id;
     }
 
-    public Instant getMomment() {
+    public Instant getMoment() {
         return moment;
     }
 
-    public void setMomment(Instant momment) {
-        this.moment = momment;
+    public void setMoment(Instant moment) {
+        this.moment = moment;
     }
 
     public OrderStatus getStatus() {

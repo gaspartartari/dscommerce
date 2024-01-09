@@ -2,20 +2,12 @@ package com.learning.dscommerce.DTO;
 
 import java.time.Instant;
 
-import com.learning.dscommerce.entities.Payment;
-
 public class PaymentDTO {
     private Long id;
     private Instant moment;
 
-    public PaymentDTO(Long id, Instant moment) {
-        this.id = id;
-        this.moment = moment;
-    }
+    public PaymentDTO(){
 
-    public PaymentDTO(Payment entity) {
-        id = entity.getId();
-        moment = entity.getMomment();
     }
 
     public Long getId() {
@@ -24,5 +16,13 @@ public class PaymentDTO {
 
     public Instant getMoment() {
         return moment;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setMoment(Instant moment) {
+        this.moment = moment;
     }
 }

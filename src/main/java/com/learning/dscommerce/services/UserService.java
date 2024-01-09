@@ -24,6 +24,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EntityMapperService entityMapperService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<UserDetailsProjection> result = userRepository.searchUserAndRolesByEmail(username);
@@ -55,7 +58,7 @@ public class UserService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDTO getMe(){
         User user = authenticated();
-        return new UserDTO(user);
+        return entityMapperService.userToUserDto(user);
     }
     
 }

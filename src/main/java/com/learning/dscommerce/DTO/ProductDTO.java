@@ -32,21 +32,8 @@ public class ProductDTO {
     @NotEmpty(message = "There must be at least one category")
     private List<CategoryDTO> categories = new ArrayList<>();
 
-    
+    public ProductDTO(){
 
-    public ProductDTO (Long id, String name, String description, Double price, String imgUrl) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.imgUrl = imgUrl;
-    }
-
-    public ProductDTO(Product product) {
-        BeanUtils.copyProperties(product, this);
-        for(Category category : product.getCategories()){
-            categories.add(new CategoryDTO(category));
-        }
     }
 
     public Long getId() {
@@ -94,5 +81,8 @@ public class ProductDTO {
         return categories;
     }
 
+    public void addCategories(List<CategoryDTO> categories) {
+        this.categories = categories;
+    }
     
 }

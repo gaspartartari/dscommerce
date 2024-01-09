@@ -24,17 +24,20 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private EntityMapperService entityMapperService;
+
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id){
         Product result = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Resource not found: " + id));
-        ProductDTO dto = new ProductDTO(result);
+        ProductDTO dto = entityMapperService.productToProductDto(result);
         return dto;
     }
 
     @Transactional(readOnly = true)
     public Page<ProductMinDTO> findAll(String name, Pageable pageable){
        Page<Product> result =  productRepository.searchByName(name, pageable);
-       return result.map(x -> new ProductMinDTO(x));
+       return result.map(x -> entityMapperService.productToProductMinDto(x));
     }
 
     @Transactional
@@ -42,7 +45,7 @@ public class ProductService {
         Product entity = new Product();
         copyDtoToEntity(dto, entity);
         entity = productRepository.save(entity);
-        return new ProductDTO(entity);
+        return entityMapperService.productToProductDto(entity);
     }
 
     @Transactional
@@ -51,7 +54,7 @@ public class ProductService {
             Product entity = productRepository.getReferenceById(id);
             copyDtoToEntity(dto, entity);
             entity = productRepository.save(entity);
-            return new ProductDTO(entity);
+            return entityMapperService.productToProductDto(entity);
         } 
         catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Resource not found: " + id);

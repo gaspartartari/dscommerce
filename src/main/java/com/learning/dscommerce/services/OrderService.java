@@ -31,10 +31,13 @@ public class OrderService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @Autowired
+    private EntityMapperService entityMapperService;
+
     @Transactional(readOnly = true)
     public OrderDTO findById(Long id){
         Order result = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Resource not found: " + id));
-        OrderDTO dto = new OrderDTO(result);
+        OrderDTO dto = entityMapperService.orderToOrderDto(result);
         return dto;
     }
 
@@ -42,7 +45,7 @@ public class OrderService {
     public OrderDTO insert(OrderDTO dto) {
         Order order = new Order();
         order.setClient(userService.authenticated());
-        order.setMomment(Instant.now());
+        order.setMoment(Instant.now());
         order.setStatus(OrderStatus.WAITING_PAYMENT);
         
         for(OrderItemDTO itemDTO : dto.getItems()){
@@ -53,6 +56,6 @@ public class OrderService {
 
         orderRepository.save(order);
         orderItemRepository.saveAll(order.getItems());
-        return new OrderDTO(order);
+        return entityMapperService.orderToOrderDto(order);
     }
 }

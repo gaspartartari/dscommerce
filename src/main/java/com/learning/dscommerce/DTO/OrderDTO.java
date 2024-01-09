@@ -4,8 +4,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.learning.dscommerce.entities.Order;
-import com.learning.dscommerce.entities.OrderItem;
 import com.learning.dscommerce.entities.enums.OrderStatus;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -21,22 +19,9 @@ public class OrderDTO {
     @NotEmpty(message = "There must be at least one item")
     private List<OrderItemDTO> items = new ArrayList<>();
 
-    public OrderDTO(Long id, Instant moment, OrderStatus status) {
-        this.id = id;
-        this.moment = moment;
-        this.status = status;
-    }
+    public OrderDTO(){
 
-    public OrderDTO(Order entity) {
-        id = entity.getId();
-        moment = entity.getMomment();
-        status = entity.getStatus();
-        client = new ClientDTO(entity.getClient());
-        payment = (entity.getPayment() == null) ? null : new PaymentDTO(entity.getPayment());
-        for (OrderItem item : entity.getItems()){
-            items.add(new OrderItemDTO(item));
-        }
-    } 
+    }
 
     public Long getId() {
         return id;
@@ -82,11 +67,15 @@ public class OrderDTO {
         this.payment = payment;
     }
 
+    public void setItems(List<OrderItemDTO> items) {
+        this.items = items;
+    }  
+
     public Double getTotal(){
         Double sum = 0.0;
         for(OrderItemDTO item : items){
             sum += item.getSubTotal();
         }
         return sum;
-    }  
+    }
 }

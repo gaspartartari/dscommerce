@@ -1,20 +1,11 @@
 package com.learning.dscommerce.DTO;
 
-import org.springframework.beans.BeanUtils;
-
-import com.learning.dscommerce.entities.User;
-
 public class ClientDTO {
     private Long id;
     private String name;
-    
-    public ClientDTO(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
-    public ClientDTO(User entity) {
-        BeanUtils.copyProperties(entity, this);
+    public ClientDTO(){
+
     }
 
     public Long getId() {

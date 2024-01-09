@@ -1,7 +1,5 @@
 package com.learning.dscommerce.DTO;
 
-import com.learning.dscommerce.entities.OrderItem;
-
 public class OrderItemDTO {
     private Long productId;
     private String name;
@@ -9,20 +7,8 @@ public class OrderItemDTO {
     private Integer quantity;
     private String imgUlr;
 
-    public OrderItemDTO(Long productId, String name, Double price, Integer quantity, String imgUrl) {
-        this.productId = productId;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.imgUlr = imgUrl;
-    }
+    public OrderItemDTO(){
 
-    public OrderItemDTO(OrderItem entity){
-        productId = entity.getProduct().getId();
-        name = entity.getProduct().getName();
-        price = entity.getProduct().getPrice();
-        quantity = entity.getQuantity();
-        imgUlr = entity.getProduct().getImgUrl();
     }
 
     public Long getProductId() {
@@ -63,5 +49,9 @@ public class OrderItemDTO {
 
     public String getImgUlr() {
         return imgUlr;
+    }
+
+    public void setImgUlr(String imgUlr) {
+        this.imgUlr = imgUlr;
     }
 }

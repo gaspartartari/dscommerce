@@ -44,11 +44,11 @@ public class Payment {
         this.id = id;
     }
 
-    public Instant getMomment() {
+    public Instant getMoment() {
         return moment;
     }
 
-    public void setMomment(Instant moment) {
+    public void setMoment(Instant moment) {
         this.moment = moment;
     }
 

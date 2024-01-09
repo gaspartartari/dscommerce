@@ -4,12 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 
-import com.learning.dscommerce.entities.User;
-
-
+import com.learning.dscommerce.entities.Role;
 
 public class UserDTO {
 
@@ -19,15 +16,11 @@ public class UserDTO {
     private String phone;
     private LocalDate birthDate;
     private List<String> authorities = new ArrayList<>();
-    
-    public UserDTO(User user) {
-        BeanUtils.copyProperties(user, this);
-        
-        for(GrantedAuthority role: user.getRoles()){
-            authorities.add(role.getAuthority());
-        }
-    }
 
+    public UserDTO(){
+
+    }
+    
     public Long getId() {
         return id;
     }
@@ -70,6 +63,12 @@ public class UserDTO {
 
     public List<String> getAuthorities() {
         return authorities;
+    }
+
+    public void addAuthorities(List<Role> roles){
+        for(GrantedAuthority role: roles){
+            authorities.add(role.getAuthority());
+        }
     }
 }
 
