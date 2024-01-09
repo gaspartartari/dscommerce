@@ -34,11 +34,14 @@ public class OrderService {
     @Autowired
     private EntityMapperService entityMapperService;
 
+    @Autowired
+    private AuthService authService;
+
     @Transactional(readOnly = true)
     public OrderDTO findById(Long id){
         Order result = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Resource not found: " + id));
-        OrderDTO dto = entityMapperService.orderToOrderDto(result);
-        return dto;
+        authService.validateSelfOrAdmin(result.getClient().getId());
+        return entityMapperService.orderToOrderDto(result);
     }
 
     @Transactional
