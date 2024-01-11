@@ -1,15 +1,21 @@
 package com.learning.dscommerce.services;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.stereotype.Service;
 
+import com.learning.dscommerce.DTO.CategoryDTO;
 import com.learning.dscommerce.DTO.OrderDTO;
 import com.learning.dscommerce.DTO.OrderItemDTO;
 import com.learning.dscommerce.DTO.PaymentDTO;
 import com.learning.dscommerce.DTO.ProductDTO;
 import com.learning.dscommerce.DTO.ProductMinDTO;
 import com.learning.dscommerce.DTO.UserDTO;
+import com.learning.dscommerce.entities.Category;
 import com.learning.dscommerce.entities.Order;
 import com.learning.dscommerce.entities.OrderItem;
 import com.learning.dscommerce.entities.Payment;
@@ -78,5 +84,9 @@ public class EntityMapperService {
 
     public OrderDTO orderToOrderDto(Order order){
         return modelMapper.map(order, OrderDTO.class);
+    }
+
+    public List<CategoryDTO> categoryToCategoryDTO(List<Category> categories){
+        return categories.stream().map(cat -> modelMapper.map(cat, CategoryDTO.class)).collect(Collectors.toList());
     }
 }
