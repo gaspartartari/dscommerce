@@ -21,6 +21,6 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public List<CategoryDTO> findAll(){
        List<Category> result =  categoryRepository.findAll();
-       return entityMapperService.categoryToCategoryDTO(result);
+       return result.stream().map(cat -> entityMapperService.categoryToCategoryDTO(cat)).toList();
     }
 }

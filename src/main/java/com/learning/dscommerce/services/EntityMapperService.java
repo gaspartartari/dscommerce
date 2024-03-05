@@ -86,7 +86,7 @@ public class EntityMapperService {
         return modelMapper.map(order, OrderDTO.class);
     }
 
-    public List<CategoryDTO> categoryToCategoryDTO(List<Category> categories){
-        return categories.stream().map(cat -> modelMapper.map(cat, CategoryDTO.class)).collect(Collectors.toList());
+    public CategoryDTO categoryToCategoryDTO(Category categorie){
+        return modelMapper.map(categorie, CategoryDTO.class);
     }
 }
