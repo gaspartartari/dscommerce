@@ -1,9 +1,5 @@
 package com.learning.dscommerce.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.stereotype.Service;

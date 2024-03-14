@@ -1,13 +1,20 @@
 package com.learning.dscommerce.test;
 
+import java.util.List;
+
+import com.learning.dscommerce.DTO.CategoryDTO;
 import com.learning.dscommerce.DTO.ProductDTO;
 import com.learning.dscommerce.DTO.ProductMinDTO;
+import com.learning.dscommerce.entities.Category;
 import com.learning.dscommerce.entities.Product;
 
 public class ProductFactory {
     
     public static Product createProduct(){
-        return new Product(1L, "MacBook", "The best ever", 50.0, "www.imgrul.com");
+        Product product = new Product(1L, "MacBook", "The best ever", 50.0, "www.imgrul.com");
+        Category category = CategoryFactory.createCategory();
+        product.getCategories().add(category);
+        return product;
     }
 
     public static Product createProduct(Long id, String name, String description, Double value, String imgUrl){
@@ -22,6 +29,8 @@ public class ProductFactory {
         productDTO.setDescription(product.getDescription());
         productDTO.setImgUrl(product.getImgUrl());
         productDTO.setPrice(product.getPrice());
+        CategoryDTO catDTO = CategoryFactory.createCategoryDto();
+        productDTO.addCategories(List.of(catDTO));
         return productDTO;
     }
 
