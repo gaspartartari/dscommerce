@@ -70,5 +70,6 @@ public class UserDTO {
             authorities.add(role.getAuthority());
         }
     }
+    
 }
 

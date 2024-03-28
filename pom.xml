@@ -97,10 +97,13 @@
 				<version>0.8.10</version>
 				<configuration>
 					<excludes>
-						<exclude>com/learning/dscommerce/DscommerceApplication.java</exclude>
+						<exclude>com/learning/dscommerce/DscommerceApplication.class</exclude>
 						<exclude>com/learning/dscommerce/config/**</exclude>
 						<exclude>com/learning/dscommerce/entities/**</exclude>
 						<exclude>com/learning/dscommerce/DTO/**</exclude>
+						<exclude>com/learning/dscommerce/services/EntityMapperService.class</exclude>
+						<exclude>com/learning/dscommerce/utils/**</exclude>
+						<exclude>com/learning/dscommerce/controllers/**</exclude>
 						<exclude>com/learning/dscommerce/controllers/handlers/**</exclude>
 						<exclude>com/learning/dscommerce/services/exceptions/**</exclude>
 					</excludes>

@@ -1,9 +1,5 @@
 package com.learning.dscommerce.DTO;
 
-import org.springframework.beans.BeanUtils;
-
-import com.learning.dscommerce.entities.Product;
-
 public class ProductMinDTO {
     
     private Long id;

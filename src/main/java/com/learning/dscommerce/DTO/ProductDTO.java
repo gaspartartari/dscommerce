@@ -3,11 +3,6 @@ package com.learning.dscommerce.DTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
-
-import com.learning.dscommerce.entities.Category;
-import com.learning.dscommerce.entities.Product;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
