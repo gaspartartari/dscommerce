@@ -3,6 +3,7 @@ package com.learning.dscommerce.controllers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,6 +61,173 @@ public class ProductControllerIT {
 
     }
 
+    // 15. Atualização de produto retorna 404 para produto inexistente quando logado
+    // como admin
+
+    @Test
+    public void updateShouldReturnNotFoundWhenIdDoesNotExistAndAdminLogged() throws Exception {
+
+        String json = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(put("/products/{id}", nonExistingId)
+                .header("Authorization", "Bearer " + adminToken)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isNotFound());
+    
+    }
+
+    // 16. Atualização de produto retorna 422 e mensagens customizadas com dados
+    // inválidos quando logado como admin e campo name for inválido
+    @Test
+    public void updateShouldReturnUnprocessableEntityAndCustomErrorsWhenInvalidNameAndAdminLogged() throws Exception {
+
+        productDTO.setName(null);
+        String json = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(put("/products/{id}", existingId)
+                .header("Authorization", "Bearer " + adminToken)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isUnprocessableEntity());
+        result.andExpect(jsonPath("$.status").value(422));
+        result.andExpect(jsonPath("$.errors[0].fieldName").value("name"));
+    }
+
+    // 17. Atualização de produto retorna 422 e mensagens customizadas com dados
+    // inválidos quando logado como admin e campo description for inválido
+    @Test
+    public void updateShouldReturnUnprocessableEntityAndCustomErrorsWhenInvalidDescriptionAndAdminLogged() throws Exception {
+
+        productDTO.setDescription(null);
+        String json = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(put("/products/{id}", existingId)
+                .header("Authorization", "Bearer " + adminToken)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isUnprocessableEntity());
+        result.andExpect(jsonPath("$.status").value(422));
+        result.andExpect(jsonPath("$.errors[0].fieldName").value("description"));
+    }
+
+    // 18. Atualização de produto retorna 422 e mensagens customizadas com dados
+    // inválidos quando logado como admin e campo price for negativo
+    @Test
+    public void updateShouldReturnUnprocessableEntityAndCustomErrorsWhenNegativePriceAndAdminLogged() throws Exception {
+
+        productDTO.setPrice(-10.0);
+        String json = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(put("/products/{id}", existingId)
+                .header("Authorization", "Bearer " + adminToken)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isUnprocessableEntity());
+        result.andExpect(jsonPath("$.status").value(422));
+        result.andExpect(jsonPath("$.errors[0].fieldName").value("price"));
+    }
+
+    // 19. Atualização de produto retorna 422 e mensagens customizadas com dados
+    // inválidos quando logado como admin e campo price for zero
+    @Test
+    public void updateShouldReturnUnprocessableEntityAndCustomErrorsWhenInvalidDataAndAdminLogged() throws Exception {
+
+        productDTO.addCategories(null);
+        String json = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(put("/products/{id}", existingId)
+                .header("Authorization", "Bearer " + adminToken)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isUnprocessableEntity());
+        result.andExpect(jsonPath("$.status").value(422));
+        result.andExpect(jsonPath("$.errors[0].fieldName").value("categories"));
+    }
+
+    // 20. Atualização de produto retorna 422 e mensagens customizadas com dados
+    // inválidos quando logado como admin e não tiver categoria
+    @Test
+    public void updateShouldReturnUnprocessableEntityAndCustomErrorsWhenNoCategoryInformedAndAdminLogged() throws Exception {
+
+        productDTO.addCategories(null);
+        String json = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(put("/products/{id}", existingId)
+                .header("Authorization", "Bearer " + adminToken)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isUnprocessableEntity());
+        result.andExpect(jsonPath("$.status").value(422));
+        result.andExpect(jsonPath("$.errors[0].fieldName").value("categories"));
+    }
+
+    // 21. Atualização de produto retorna 403 quando logado como cliente
+    @Test
+    public void updateShouldReturnForbiddenWhenClientLogged() throws Exception {
+
+        productDTO.setName("New Product");
+        String json = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(put("/products/{id}", existingId)
+                .header("Authorization", "Bearer " + clientToken)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isForbidden());
+
+    }
+
+    // 22. Atualização de produto retorna 401 quando não logado como admin ou
+    // cliente
+    @Test
+    public void updateShouldReturnUnauthorizedWhenNoUserLogged() throws Exception {
+
+        productDTO.setName("New Product");
+        String json = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(put("/products/{id}", existingId)
+                .header("Authorization", "Bearer " + invalidToken)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isUnauthorized());
+
+    }
+
+    // Atualização de produto atualiza produto com dados válidos quando logado como
+    // admin
+    @Test
+    public void updateShouldUpdateProductWhenValidDataAndAdminLogged() throws Exception {
+
+        productDTO.setName("New Product");
+        String json = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(put("/products/{id}", existingId)
+                .header("Authorization", "Bearer " + adminToken)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk());
+        result.andExpect(jsonPath("$.id").value(existingId));
+        result.andExpect(jsonPath("$.name").value("New Product"));
+    }
+
     // Deleção de produto retorna 401 quando não logado como admin ou cliente
     @Test
     public void deleteByIdShouldReturnUnauthorizedWhenNoUserLogged() throws Exception {
@@ -84,7 +252,8 @@ public class ProductControllerIT {
 
     }
 
-    // Deleção de produto retorna 400 para produto dependente quando logado como admin
+    // Deleção de produto retorna 400 para produto dependente quando logado como
+    // admin
     @Test
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deleteByIdShouldReturnBadRequestWhenDependentProductAndAdminLogged() throws Exception {
@@ -97,10 +266,11 @@ public class ProductControllerIT {
 
     }
 
-    //Deleção de produto retorna 404 para produto inexistente quando logado como admin
+    // Deleção de produto retorna 404 para produto inexistente quando logado como
+    // admin
     @Test
     public void deleteByIdShouldReturnNotFoundWhenNonExsistingProductAndAdminLogged() throws Exception {
-       
+
         ResultActions result = mockMvc.perform(delete("/products/{id}", nonExistingId)
                 .header("Authorization", "Bearer " + adminToken)
                 .accept(MediaType.APPLICATION_JSON));
@@ -140,7 +310,6 @@ public class ProductControllerIT {
     @Test
     public void insertShouldReturnForbiddenWhenClientLogged() throws Exception {
 
-
         String json = objectMapper.writeValueAsString(productDTO);
 
         ResultActions result = mockMvc.perform(post("/products")
@@ -156,7 +325,8 @@ public class ProductControllerIT {
     // Inserção de produto retorna 422 e mensagens customizadas com dados inválidos
     // quando logado como admin e não tiver categoria associada
     @Test
-    public void insertShouldReturnUnprocessableEntityAndCustomErrorsWhenProductCategoryNotInformedAndAdminLogged() throws Exception {
+    public void insertShouldReturnUnprocessableEntityAndCustomErrorsWhenProductCategoryNotInformedAndAdminLogged()
+            throws Exception {
 
         ProductDTO invalidProductDTO = ProductFactory.createProductDTO();
         invalidProductDTO.addCategories(null);
@@ -179,7 +349,8 @@ public class ProductControllerIT {
     // Inserção de produto retorna 422 e mensagens customizadas com dados inválidos
     // quando logado como admin e campo price for zero
     @Test
-    public void insertShouldReturnUnprocessableEntityAndCustomErrorsWhenProductPriceIsZeroAndAdminLogged() throws Exception {
+    public void insertShouldReturnUnprocessableEntityAndCustomErrorsWhenProductPriceIsZeroAndAdminLogged()
+            throws Exception {
 
         ProductDTO invalidProductDTO = ProductFactory.createProductDTO();
         invalidProductDTO.setPrice(0.0);
@@ -202,7 +373,8 @@ public class ProductControllerIT {
     // Inserção de produto retorna 422 e mensagens customizadas com dados inválidos
     // quando logado como admin e campo price for negativo
     @Test
-    public void insertShouldReturnUnprocessableEntityAndCustomErrorsWhenNegativeProductPriceAndAdminLogged() throws Exception {
+    public void insertShouldReturnUnprocessableEntityAndCustomErrorsWhenNegativeProductPriceAndAdminLogged()
+            throws Exception {
 
         ProductDTO invalidProductDTO = ProductFactory.createProductDTO();
         invalidProductDTO.setPrice(-20.0);
@@ -224,7 +396,8 @@ public class ProductControllerIT {
     // Inserção de produto retorna 422 e mensagens customizadas
     // com dados inválidos quando logado como admin e campo description for inválido
     @Test
-    public void insertShouldReturnUnprocessableEntityAndCustomErrorsWhenInvalidProductDescriptionAndAdminLogged() throws Exception {
+    public void insertShouldReturnUnprocessableEntityAndCustomErrorsWhenInvalidProductDescriptionAndAdminLogged()
+            throws Exception {
 
         ProductDTO invalidProductDTO = ProductFactory.createProductDTO();
         invalidProductDTO.setDescription(" ");
@@ -246,7 +419,8 @@ public class ProductControllerIT {
     // Inserção de produto retorna 422 e mensagens customizadas com
     // dados inválidos quando logado como admin e campo name for inválido
     @Test
-    public void insertShouldReturnUnprocessableEntityAndCustomErrorsWhenInvaliProductNameAndAdminLogged() throws Exception {
+    public void insertShouldReturnUnprocessableEntityAndCustomErrorsWhenInvaliProductNameAndAdminLogged()
+            throws Exception {
 
         ProductDTO invalidProductDTO = ProductFactory.createProductDTO();
         invalidProductDTO.setName(" ");
