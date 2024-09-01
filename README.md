@@ -5,7 +5,7 @@
 
 **Name:** Ds Commerce
 
-**Purpose:** Ds Commerce, an educational back-end web application, employs a layered architecture to proficiently manage users, products, categories, orders, and payments. It features robust security through OAuth2 with JWT token implementation and utilizes JPA/Hibernate for efficient object-relational mapping.
+**Purpose:** DsCommerce is an educational back-end web application designed to demonstrate key software engineering principles. It features a layered architecture for maintainability and scalability and efficiently manages users, products, categories, orders, and payments. With OAuth2 and JWT token security, along with JPA/Hibernate for ORM, Ds Commerce offers a robust foundation for understanding enterprise-level application development.
 
 **Key Features:**
 1. **Layered Architecture:** Structured for maintainability and scalability, the project follows a layered architecture.
